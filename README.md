@@ -4,7 +4,7 @@ A library that provides the download links of Android apps on Google Playstore
 ### Setup
 1) Download and install Raccoon.jar from here: https://raccoon.onyxbits.de
 2) Login to Raccoonn with your Google Play gmail account.
-3) Choose to register a new pseudo device or mimick an existing device.
+3) Choose to register a new pseudo device.
 4) Then add the following dependency to your maven:
 
 ### Dependency
