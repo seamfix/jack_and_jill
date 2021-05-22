@@ -30,6 +30,11 @@ public class PlayStoreManager {
     }
 
 
+    /**
+     * This should be called after the init().
+     * @param application: the application to retrieve download link.
+     * @param response: a callback.
+     */
     public static void getDownloadUrl(Application application, OperationResponse response){
         if(config != null) {
             String packageName = application.getPackageName();
