@@ -2,29 +2,44 @@ import callback.OperationResponse;
 import com.akdeniz.googleplaycrawler.DownloadData;
 import com.akdeniz.googleplaycrawler.GooglePlay;
 import com.akdeniz.googleplaycrawler.GooglePlayAPI;
-import de.onyxbits.raccoon.db.DatabaseManager;
-import de.onyxbits.raccoon.gplay.PlayManager;
-import de.onyxbits.raccoon.repo.Layout;
 import enums.ErrorReason;
 import model.Application;
+import model.Config;
+import util.Util;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import static util.Util.extractDownloadUrl;
+import static util.Util.isValidPackageName;
+
 
 
 public class PlayStoreManager {
 
     //This should always be  set to 1
     final static int OFFER_TYPE = 1;
+    private static Config config;
+
+
+    /**
+     * init() should be called first before getDownloadUrl() in order to initialize the GooglePlayAPI
+     * class that will be needed to fetch the download link.
+     * @param newConfig:  contains params for GooglePlayAPI.
+     */
+    public static void init(Config newConfig){
+        config = newConfig;
+    }
 
 
     public static void getDownloadUrl(Application application, OperationResponse response){
-        String packageName = application.getPackageName();
-        if(!isValidPackageName(packageName)){
-            response.error(ErrorReason.INVALID_PACKAGE_NAME.errorReason);
+        if(config != null) {
+            String packageName = application.getPackageName();
+            if (!isValidPackageName(packageName)) {
+                response.error(ErrorReason.INVALID_PACKAGE_NAME.errorReason);
+            } else {
+                doWork(config, packageName.trim(), response);
+            }
         }else{
-            doWork(packageName.trim(), response);
+            response.error(ErrorReason.NO_CONFIG_FOUND.errorReason);
         }
     }
 
@@ -35,12 +50,12 @@ public class PlayStoreManager {
      * @throws SQLException
      * @throws IOException
      */
-    private static void doWork(String packageName, OperationResponse response){
+    private static void doWork(Config config,
+                               String packageName,
+                               OperationResponse response){
 
         try {
-            DatabaseManager dbm = new DatabaseManager(Layout.DEFAULT.databaseDir);
-            PlayManager pm = new PlayManager(dbm);
-            GooglePlayAPI api = pm.createConnection();
+            GooglePlayAPI api = Util.getGooglePlayAPI(config);
             GooglePlay.DetailsResponse dr = api.details(packageName);
             int versionCode = dr.getDocV2().getDetails().getAppDetails().getVersionCode();
             DownloadData data = api.purchaseAndDeliver(packageName,versionCode,OFFER_TYPE);
@@ -50,31 +65,5 @@ public class PlayStoreManager {
             e.printStackTrace();
             response.error(ErrorReason.GENERAL.errorReason);
         }
-    }
-
-    /**
-     *
-     * @param packageName: Your app's package name.
-     * @return true only if the package name is valid.
-     */
-    public static boolean isValidPackageName(String packageName){
-        return packageName != null && !packageName.equals("");
-    }
-
-
-    /**
-     * Use this method to extract out the downoad url from the DownloadData.
-     * @param data
-     * @return download url.
-     */
-    public static String extractDownloadUrl(DownloadData data){
-        String asText = data.toString();
-        Pattern pattern = Pattern.compile("downloadUrl: \"(.*?)\"\ndownloadAuthCookie");//this usually holds the user's name
-        Matcher matcher = pattern.matcher(asText);
-        String downloadUrl = null;
-        while(matcher.find()){
-            downloadUrl = matcher.group(1).trim(); //remove any leading or trailing space
-        }
-        return downloadUrl;
     }
 }
