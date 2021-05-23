@@ -6,7 +6,7 @@ A library that provides the download links of Android apps on Google Playstore
 <dependency>
   <groupId>com.seamfix.sdk</groupId>
   <artifactId>jackandjill</artifactId>
-  <version>1.0</version>
+  <version>1.0.0</version>
 </dependency>
 ```
 ### Implementation
