@@ -11,8 +11,8 @@ public class Main {
 
         //Create the config:
         Config config = new Config();
-        config.setEmail("jeffemuveyan@gmail.com");
-        config.setPassword("jeff2468JEFF");
+        config.setEmail("");
+        config.setPassword("");
         config.setAndroidID("3db73058499949ce");
 
         //Set the config:
