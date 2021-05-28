@@ -20,7 +20,7 @@ config.setPassword("your password");
 config.setAndroidID("3db73058499949ce");
 
 //Set the config:
-PlayStoreManager.init(config);
+manager.PlayStoreManager.init(config);
 
 ```
 
@@ -30,7 +30,7 @@ String packageName = "com.seamfix.bioregistra";
 Application application = new Application(packageName);
 
 //Request the download url:
-PlayStoreManager.getDownloadUrl(application, new OperationResponse() {
+manager.PlayStoreManager.getDownloadUrl(application, new OperationResponse() {
     public void success(String downloadUrl) {
         System.out.println("Download url: "+ downloadUrl);
     }
