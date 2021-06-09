@@ -1,5 +1,8 @@
-import callback.OperationResponse;
+import constants.Constants;
+import manager.PlayStoreManager;
+import model.AppDetailsResponse;
 import model.Application;
+import model.Config;
 
 public class Main {
 
@@ -8,15 +11,23 @@ public class Main {
      */
     public static void main(String []args){
 
-        Application application = new Application("com.looper.apps.loopercalculator");
-        PlayStoreManager.getDownloadUrl(application, new OperationResponse() {
-            public void success(String downloadUrl) {
-                System.out.println("Download url: "+ downloadUrl);
-            }
+        //Create the config:
+        Config config = new Config();
+        config.setEmail(Constants.USERNAME);
+        config.setPassword(Constants.PASSWORD);
+        config.setAndroidID("3db73058499949ce");
 
-            public void error(String errorMessage) {
-                System.out.println("Error message: "+errorMessage);
-            }
-        });
+        PlayStoreManager playStoreManager = new PlayStoreManager();
+        //Set the config:
+        playStoreManager.init(config);
+
+        //Create the application:
+        Application application = new Application("com.whatsapp");
+
+        //Request the download url:
+        AppDetailsResponse  appDetails = playStoreManager.getAppDetails(application);
+
+        System.out.println(appDetails);
+
     }
 }

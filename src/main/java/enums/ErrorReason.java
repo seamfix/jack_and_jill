@@ -2,13 +2,25 @@ package enums;
 
 public enum ErrorReason{
 
-    INVALID_VERSION_CODE("INVALID_VERSION_CODE"),
-    INVALID_PACKAGE_NAME("INVALID_PACKAGE_NAME"),
-    GENERAL("Ensure that you have racoon.jar installed and running on this system and that you are connected to the internet.");
+    SUCCESS(1, "SUCCESS"),
+    NO_CONFIG_FOUND(2, "NO_CONFIG_FOUND"),
+    INVALID_PACKAGE_NAME(3, "INVALID_PACKAGE_NAME"),
+    GENERAL_ERROR(4, "Unable to retrieve download link, ensure you have access to the internet");
 
-    ErrorReason(String reason) {
+    ErrorReason(int errorCode,String reason) {
+        this.errorCode = errorCode;
         this.errorReason = reason;
     }
 
-    public final String errorReason;
+    private final String errorReason;
+    private final int errorCode;
+
+    public String getErrorReason() {
+        return errorReason;
+    }
+
+    public int getErrorCode() {
+        return errorCode;
+    }
+
 }

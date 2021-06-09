@@ -1,17 +1,18 @@
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
+import static util.Util.isValidPackageName;
 
 public class PlayStoreManagerTest {
 
     @Test
-    public void isValidPackageName(){
+    public void isValidPackageNameTest(){
         String nameA = "";
         String nameB = "1.2.3";
         String nameC = null;
 
-        boolean resultA = PlayStoreManager.isValidPackageName(nameA);
-        boolean resultB = PlayStoreManager.isValidPackageName(nameB);
-        boolean resultC = PlayStoreManager.isValidPackageName(nameC);
+        boolean resultA = isValidPackageName(nameA);
+        boolean resultB = isValidPackageName(nameB);
+        boolean resultC = isValidPackageName(nameC);
 
         assertEquals(resultA, false);
         assertEquals(resultB, true);
