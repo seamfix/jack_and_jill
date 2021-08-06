@@ -11,9 +11,9 @@ public class Main {
 
         //Create the config:
         Config config = new Config();
-        config.setEmail("");
-        config.setPassword("");
-        config.setAndroidID("3db73058499949ce");
+        config.setEmail("YOUR EMAIL");
+        config.setPassword("YOUR PASSWORD");
+        config.setAndroidID("3E387E0820FA4A4A");
 
         //Set the config:
         PlayStoreManager.init(config);
